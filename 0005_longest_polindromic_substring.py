@@ -14,7 +14,6 @@ Input: s = "cbbd"
 Output: "bb"
 '''
 
-
 class Solution:
 
     def is_pol(self, substr: str) -> bool:
@@ -25,18 +24,20 @@ class Solution:
             return s
         result = ""
         for left in range(len(s)-1):
-            position = old_position = left
+            position = left
             while position < len(s) or position != -1:
-                position = s[old_position + 1:].find(s[left])
+                position = s.find(s[left], position + 1)
                 if position == -1:
                     break
-                old_position = position + old_position + 1
                 sl = s[left:] \
-                    if old_position == len(s) \
-                    else s[left:old_position + 1]
+                    if position == len(s) \
+                    else s[left:position + 1]
 
                 if self.is_pol(sl) and len(sl) > len(result):
                     result = sl
+                
+                position += 1
+                
         return s[0] if result == "" else result
 
 
