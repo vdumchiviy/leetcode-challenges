@@ -14,39 +14,40 @@ Input: s = "cbbd"
 Output: "bb"
 '''
 
-class Solution:
 
-    def is_pol(self, substr: str) -> bool:
-        return True if substr == substr[::-1] else False
+class Solution:
 
     def longestPalindrome(self, s: str) -> str:
         if len(s) == 1:
             return s
         result = ""
-        for left in range(len(s)-1):
-            position = left
-            while position < len(s) or position != -1:
-                position = s.find(s[left], position + 1)
-                if position == -1:
-                    break
-                sl = s[left:] \
-                    if position == len(s) \
-                    else s[left:position + 1]
 
-                if self.is_pol(sl) and len(sl) > len(result):
+        for left in range(len(s)-1):
+            position = len(s) - 1
+            if position - left <= len(result):
+                break
+            while position > left or position != -1:
+                position = s.rfind(s[left], left, position+1)
+                if position == -1 or position == left:
+                    break
+                if position == len(s):
+                    sl = s[left:]
+                else:
+                    sl = s[left:position + 1]
+                position -= 1
+                if sl == sl[::-1] and len(sl) > len(result):
                     result = sl
-                
-                position += 1
-                
+                    break
+
         return s[0] if result == "" else result
 
 
 sol = Solution()
+assert sol.longestPalindrome("abcdbab") == "bab"
 assert sol.longestPalindrome("cbbd") == "bb"
 assert sol.longestPalindrome("babad") == "bab"
 assert sol.longestPalindrome("bababad") == "babab"
 assert sol.longestPalindrome("babababd") == "bababab"
-assert sol.longestPalindrome("abcdbab") == "bab"
 assert sol.longestPalindrome("a") == "a"
 assert sol.longestPalindrome("ab") == "a"
 s = "tktneonoubkxgfhybavrfnetlxgtkelsoeeuznssntcleenqgiboexflfvlfiapqjbcwyenmfnmxcbcjscucqhwuqfzvvkdxrtxzhjdvsjawcwffoglhkxvyxaninlswyjcfvdwfkqheidwprtjaaqzqgloctafkuasubqqeacdpmtfzokccmnslnklxyvfitbfbdjrlzhkhnturfkimghcnngvdhbehewzzyfsbsactkrfabkhaavryubckkrqbqcbenqpeykyawzkctswaczbjtzeyteftsjklrtchxggsslscypkuilhbitsjwzsvwmqahxkmghigdtuqehjkqswchkrolcloxnkqocyjeorkwjmbevwijmqfhtmolspqcqshafjuxcheckguzxvapfivznkzdkzwnvlquzrbkhvmpdclrettjrxinbbvlwtsyepestvwjfiekjaqphfrhiifrplokslzaxmlwafrrfawlmxazlskolprfiihrfhpqajkeifjwvtsepeystwlvbbnixrjtterlcdpmvhkbrzuqlvnwzkdzknzvifpavxzugkcehcxujfahsqcqpslomthfqmjiwvebmjwkroejycoqknxolclorkhcwsqkjhequtdgihgmkxhaqmwvszwjstibhliukpycslssggxhctrlkjstfetyeztjbzcawstckzwaykyepqnebcqbqrkkcbuyrvaahkbafrktcasbsfyzzwehebhdvgnnchgmikfrutnhkhzlrjdbfbtifvyxlknlsnmcckozftmpdcaeqqbusaukfatcolgqzqaajtrpwdiehqkfwdvfcjywslninaxyvxkhlgoffwcwajsvdjhzxtrxdkvvzfquwhqcucsjcbcxmnfmneywcbjqpaiflvflfxeobigqneelctnssnzueeoslektgxltenfrvabyhfgxkbuonoentkt"
