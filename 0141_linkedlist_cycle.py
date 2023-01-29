@@ -50,15 +50,17 @@ class ListNode:
 
 class Solution:
     def hasCycle(self, head: Optional[ListNode]) -> bool:
+        if head is None or head.next is None:
+            return False
         one_step: ListNode = head
         two_step: ListNode = head.next
 
         while two_step.next is not None or one_step != two_step:
+            if two_step.next is None or two_step.next.next is None:
+                return False
             if one_step == two_step.next:
                 return True
             one_step = one_step.next
-            if two_step.next is None:
-                return False
             two_step = two_step.next.next
 
         return False
@@ -99,6 +101,20 @@ A.next = B
 B.next = C
 C.next = D
 assert sol.hasCycle(head) is False
+
+# 3 -> 2 -> 0 -> -4 -> 5 ->
+A = ListNode(3)
+B = ListNode(2)
+C = ListNode(0)
+D = ListNode(-4)
+E = ListNode(5)
+head = A
+A.next = B
+B.next = C
+C.next = D
+D.next = E
+assert sol.hasCycle(head) is False
+
 
 # 3
 A = ListNode(3)
