@@ -29,7 +29,7 @@ nums is sorted in a strictly increasing order.
 
 
 # Definition for a binary tree node.
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
 
 class TreeNode:
@@ -39,7 +39,7 @@ class TreeNode:
         self.right = right
 
 
-class Solution:
+class Solution_Old:
     def sortedArrayToBST(self, nums: List[int]) -> Optional[TreeNode]:
 
         def balance_it(point: TreeNode):
@@ -71,9 +71,55 @@ class Solution:
         return head
 
 
+class Solution:
+    def get_index(self, num_list: List[int]) -> Optional[int]:
+        length = len(num_list)
+        if length == 0:
+            return None
+        return int(length / 2)
+
+    def create_node(self, n_list: List[int]) -> Optional[TreeNode]:
+        if len(n_list) == 0:
+            return None
+        if len(n_list) == 1:
+            return TreeNode(n_list[0], None, None)
+        i = self.get_index(n_list)
+        return TreeNode(
+            n_list[i],
+            self.create_node(n_list[0:i]),
+            self.create_node(n_list[i+1:])
+        )
+
+    def sortedArrayToBST(self, nums: List[int]) -> Optional[TreeNode]:
+        if len(nums) == 0:
+            return TreeNode(None)
+        return self.create_node(nums)
+
+        # i = self.get_index(num_list=nums)
+        # tree = TreeNode(nums[i])
+        # tree.left = self.create_node(nums[0:i])
+        # tree.right = self.create_node(nums[i+1:])
+
+
+def tree_to_str(head: TreeNode) -> List[int]:
+    if head is None:
+        return "#None"
+    result = f"#{head.val}"
+    if head.left or head.right:
+        result += tree_to_str(head.left) + tree_to_str(head.right)
+
+    return result
+
+    # return f"#{head.val}" + tree_to_str(head.left) + tree_to_str(head.right)
+
 
 sol = Solution()
 
+nums = [1, 3, 4, 6, 7, 8, 10, 13, 14]
+actual = sol.sortedArrayToBST(nums)
+print(tree_to_str(actual))
+
+# assert sol.sortedArrayToBST(nums) == True
 
 #  [0,-3,9,-10,null,5]
 bst = TreeNode(
