@@ -23,12 +23,40 @@ Constraints:
 
 0 <= n <= 5 * 10*6
     """
-
 from math import sqrt
+from datetime import datetime
+
+
+def get_timer(func):
+    def _wrapper(*args, **kwargs):
+        time1 = datetime.now()
+        result = func(*args, **kwargs)
+        time2 = datetime.now()
+        print(f'time delta for n= {args[1]} is {(time2-time1)}')
+        return result
+    return _wrapper
 
 
 class Solution:
+
+    @get_timer
     def countPrimes(self, n: int) -> int:
+        if n <= 2:
+            return 0
+        cito = [(key <= 2 or key % 2 != 0) and (key <= 5 or key % 5 != 0)
+                for key in range(0, n)]
+        cito[0] = cito[1] = False
+
+        # There are no need to check for prime values if (current) > sqrt(n)
+        for current in range(2, int(sqrt(n)+1)):
+            # exclude prime from the list
+            if cito[current]:
+                # set to False each + current value started from current**2
+                cito[current ** 2: n: current] = [False] * len(cito[current ** 2: n: current])
+        return sum(cito)
+
+    @get_timer
+    def countPrimes_v3(self, n: int) -> int:
         if n <= 2:
             return 0
         cito = {key: True
@@ -38,7 +66,7 @@ class Solution:
             quad_current = current * current
             if quad_current >= n:
                 break
-            
+
             mult = 0
             check_value = quad_current + current * mult
             while check_value < n:
@@ -48,7 +76,7 @@ class Solution:
                     del cito[check_value]
                 mult += 1
                 check_value = quad_current + current * mult
-        return len(cito)      
+        return len(cito)
 
     def countPrimes_v2(self, n: int) -> int:
         primes: list = [2]
