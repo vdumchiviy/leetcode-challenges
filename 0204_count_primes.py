@@ -52,7 +52,8 @@ class Solution:
             # exclude prime from the list
             if cito[current]:
                 # set to False each + current value started from current**2
-                cito[current ** 2: n: current] = [False] * len(cito[current ** 2: n: current])
+                cito[current ** 2: n: current] = [False] * \
+                    len(cito[current ** 2: n: current])
         return sum(cito)
 
     @get_timer
