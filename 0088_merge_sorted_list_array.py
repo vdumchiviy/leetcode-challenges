@@ -60,14 +60,21 @@ class Solution:
 
         pos1 = 0
         pos2 = 0
+        # check the highest position in the lists
         while pos1 < m + n or pos2 < n:
+
             if pos1 < m + pos2 and pos2 < n:
+                # inside nums1 and we have numbers in nums2
+
                 if nums2[pos2] < nums1[pos1]:
+                    # the nums2 has smaller value: insert and change pos2
                     nums1.insert(pos1, nums2[pos2])
                     pos2 = min(pos2 + 1, n)
                 else:
+                    # the nums1 has bigger or equal value than nums2: change pos1
                     pos1 = min(pos1 + 1, m + pos2)
             else:
+                # we finished nums1, the rest values only in nums2
                 while pos2 < n:
                     nums1[pos1] = nums2[pos2]
                     pos1 += 1
