@@ -60,9 +60,11 @@ class Solution:
             if point is None:
                 return True, 0
 
-            left_bal, left_high = deep_balance(point.left)
-            right_bal, right_high = deep_balance(point.right)
-            is_bal = (left_bal and right_bal) and abs(left_high - right_high) <= 1
+            is_left_balanced, left_high = deep_balance(point.left)
+            is_right_balanced, right_high = deep_balance(point.right)
+            
+            # main condition: if somewhere unbalanced, then we "push up" False to the top
+            is_bal = (is_left_balanced and is_right_balanced) and abs(left_high - right_high) <= 1
             high = max(left_high, right_high) + 1
             return is_bal, high
 
